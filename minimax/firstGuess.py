@@ -1,8 +1,5 @@
 from collections import Counter
 
-with open('../data/wordle.txt') as wordleWordBank:
-    wordBank = guessWords = wordleWordBank.read().split(",")
-
 def simulatedGuess(guess, word):
   guess = guess.lower()
   word = word.lower()
@@ -28,16 +25,10 @@ def pruneRemainingWords(guess, wordBank):
 
 def playRound(wordBank):
   minWordBankLength = len(wordBank)
-  newWordBank = []
   bestWord = ""
-  for guessWord in guessWords:
-    tempWordBank = pruneRemainingWords(guessWord, wordBank)
-    if len(tempWordBank) < minWordBankLength:
-      minWordBankLength = len(tempWordBank)
-      print(f"Possible remaining words: {minWordBankLength}")
-      newWordBank = tempWordBank
+  for guessWord in wordBank:
+    wordBank = pruneRemainingWords(guessWord, wordBank)
+    if len(wordBank) < minWordBankLength:
+      minWordBankLength = len(wordBank)
       bestWord = guessWord
-  print(f"Best word: {bestWord}")
-  print(f"Eliminated {round(100 - 100*len(newWordBank)/len(wordBank),2)}% of words")
-  
-playRound(wordBank)
+  return bestWord
